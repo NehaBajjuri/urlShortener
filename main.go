@@ -52,7 +52,6 @@ func (res *URLShortener) Handleshorten(wr http.ResponseWriter, r *http.Request) 
         </form>
     `, originalURL, shortenedURL, shortenedURL)
 	fmt.Fprint(wr, responseHTML)
-
 }
 
 func generateShortKey() string {
@@ -92,6 +91,7 @@ func main() {
 
 	http.HandleFunc("/shorten", shortener.Handleshorten)
 	http.HandleFunc("/short/", shortener.HandleRedirect)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	fmt.Println("URL Shortener is running on :8081")
 	http.ListenAndServe(":8081", nil)
